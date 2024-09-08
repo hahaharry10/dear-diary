@@ -1,7 +1,7 @@
 # dear-diary
 
-### Aim
-dear-diary is a bash script that will act as a command line secret journal. The user will be able to call the command and create and edit a text file that is then encrypted and password protected
+### Aim:
+Dear-diary is a bash script that will act as a command line secret journal. The user will be able to call the command and create and edit a text file that is then encrypted and password protected
 upon closing.
 
 This project aims to apply a few programming practices:
