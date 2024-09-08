@@ -20,3 +20,27 @@ $ dear-diary [file]
 
 And will have the following design:
 ![image](https://github.com/user-attachments/assets/ea2e4b62-88ca-45d1-9640-5b413c3c1f70)
+
+### Additional Features:
+Additional features contribute to the final product but are beyond the MVP.
+
+Additional Features:
+- Execution options:
+	- `Usage: dear-diary [options] [file]`
+	- `-h` Display help.
+	- `-l` Encrypt (lock) the file.
+		- Input: `fileName.txt`
+		- Output: `fileName.drd`
+		- `fileName.txt` must exist.
+	- `-u` Decrypt (unlock) the file.
+		- Input: `fileName.drd`
+		- Output: `fileName.txt`
+		- `fileName.drd` must exist.
+	- `-n` Create new password before encryption.
+		- Input: `fileName[.drd|.txt]`
+		- Output: `fileName[.txt|.drd]`
+		- If file does not exist, operation will be be identical to MVP.
+	- `-nvim` Open file using neovim (if installed) instead of vim.
+	- `-v` Verbose; output log to terminal.
+
+**Note: Test scripts will be written at the start of the features development but before its implementation.**
