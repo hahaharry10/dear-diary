@@ -1,0 +1,4 @@
+#!/bin/expect
+
+# TEST: File not in directory. and nothing saved (file is empty).
+spawn dear-diary
