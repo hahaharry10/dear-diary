@@ -8,7 +8,6 @@ set FILE [lindex $argv 0]
 
 set timeout 1
 
-set errCode 100
 spawn dear-diary $FILE
 expect {
     "$FILE" {
