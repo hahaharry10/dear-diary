@@ -49,6 +49,7 @@ Additional Features:
 Error Code | Description
 ---|---
 0|Successful execution.
-1| Usage error. The command, function, file, was called incorrectly.
+1|Usage error. The command, function, file, was called incorrectly.
+-1|Feature being tested has not yet been implemented.
 
 

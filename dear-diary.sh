@@ -1,3 +1,4 @@
 #!/bin/bash
 
-echo Not implemented yet.
+vim -X -u NONE $1;
+exit -1;
