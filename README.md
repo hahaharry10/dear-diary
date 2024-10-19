@@ -46,10 +46,15 @@ Additional Features:
 **Note: Test scripts will be written at the start of the features development but before its implementation.**
 
 ### Error Codes:
+These error codes are added when their handlers are added. So the order may be iffy but that will be changed at the end.
+
 Error Code | Description
 ---|---
 0|Successful execution.
 1|Usage error. The command, function, file, was called incorrectly.
--1|Feature being tested has not yet been implemented.
+2|Desired text editor failed to open.
+3|Timeout occurred when expecting eof.
+4|The operating system returned an error when spawning process.
+255|Feature being tested has not yet been implemented.
 
 

@@ -1,15 +1,40 @@
-#!/bin/expect -f
+#!/bin/expect
 
-# TEST: File not in directory. and nothing saved (file is empty).
+# TEST: File not in directory. and nothing saved (file remains not in directory).
 if { [llength $argv] != 1 } {
-    puts "ERROR: test1.exp called without a file. [llength $argv] given";
-    puts "\tUsage: ./test1 \[file\]";
-    exit 1;
+    exit 1
 }
-set FILE [lindex $argv 0];
+set FILE [lindex $argv 0]
 
-spawn dear-diary $FILE;
-expect $FILE;
-send "aHello World!\x1B:q!\r";
-expect eof;
-exit 0;
+set timeout 1
+
+set errCode 100
+spawn dear-diary $FILE
+expect {
+    "$FILE" {
+        send "aHello World!\x1B:q!\r"
+        expect {
+            eof {
+                catch wait result
+                if { [lindex $result 2] == -1 } {
+                    set errCode 4 ;# OS error.
+                } else {
+                    set errCode [lindex $result 3]
+                }
+            } timeout {
+                set errCode 3 ;# timeout when expecting eof.
+            }
+        }
+    } timeout {
+        set errCode 2 ;# Vim failed to open.
+    } eof {
+        catch wait result ;# eof encountered too quickly. See returned error.
+        if { [lindex $result 2] == -1 } {
+            set errCode 4 ;# OS error.
+        } else {
+            set errCode [lindex $result 3]
+        }
+    }
+}
+
+exit $errCode
