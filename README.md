@@ -44,3 +44,11 @@ Additional Features:
 	- `-v` Verbose; output log to terminal.
 
 **Note: Test scripts will be written at the start of the features development but before its implementation.**
+
+### Error Codes:
+Error Code | Description
+---|---
+0|Successful execution.
+1| Usage error. The command, function, file, was called incorrectly.
+
+
