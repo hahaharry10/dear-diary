@@ -1,0 +1,83 @@
+#!/bin/expect 
+
+if { [llength $argv] != 2 } {
+    puts "Usage Error. Usage: ./test2.exp new_file password\n"
+    exit 1
+}
+set FILE [lindex $argv 0]
+set PASSWORD [lindex $argv 1]
+
+set timeout 1
+
+spawn dear-diary $FILE
+expect {
+    $FILE {
+        send "aHello World!\x1B:wq\r"
+    } timeout {
+        puts "Timeout Error: Failed to recognise vim.\n"
+        exit 2 ;# Vim failed to open.
+    } eof {
+        catch wait result ;# eof encountered too quickly. See returned error.
+        if { [lindex $result 2] == -1 } {
+            puts "OS Error: Error when executing command.\n"
+            exit 4 ;# OS error.
+        } else {
+            puts "EOF Error: when expecting \"Password:\" prompt.\n"
+            exit 5 ;# Early eof error.
+        }
+    }
+}
+
+expect {
+    "Password:" {
+        send $PASSWORD
+    } timeout {
+        puts "Timeout Error: Failed to recognise \"Password:\" prompt.\n"
+        exit 3 ;# timeout occurred when expecting pattern.
+    } eof {
+        catch wait result ;# eof encountered too quickly. See returned error.
+        if { [lindex $result 2] == -1 } {
+            puts "OS Error: Error when expecting \"Password:\" prompt.\n"
+            exit 4 ;# OS error.
+        } else {
+            puts "EOF Error: when expecting \"Password:\" prompt.\n"
+            exit 5 ;# Early eof error.
+        }
+    }
+}
+
+expect {
+    "Confirm Password:" {
+        send $PASSWORD
+    } timeout {
+        puts "Timeout Error: Failed to recognise \"Confirm Password:\" prompt.\n"
+        exit 3 ;# timeout occurred when expecting pattern.
+    } eof {
+        catch wait result ;# eof encountered too quickly. See returned error.
+        if { [lindex $result 2] == -1 } {
+            puts "OS Error: Error when expecting \"Confirm Password:\" prompt.\n"
+            exit 4 ;# OS error.
+        } else {
+            puts "EOF Error: when expecting \"Confirm Password:\" prompt.\n"
+            exit 5 ;# Early eof error
+        }
+    }
+}
+
+expect {
+    eof {
+        catch wait result
+        if { [lindex $result 2] == -1 } {
+            puts "OS Error: Error when expecting eof.\n"
+            exit 4 ;# OS error.
+        } else {
+            set returnVal [lindex $result 3]
+            puts "Returning with error code $returnVal\n"
+            exit returnVal
+        }
+    } timeout {
+        puts "Timeout Error: Failed to recognise eof.\n"
+        exit 3 ;# timeout occurred when expecting pattern.
+    }
+}
+
