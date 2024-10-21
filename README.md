@@ -51,7 +51,7 @@ These error codes are added when their handlers are added. So the order may be i
 Error Code | Description
 ---|---
 0|Successful execution.
-1|Usage error. The command, function, file, was called incorrectly.
+1|Usage error. Command, function, or file was called incorrectly.
 2|Desired text editor failed to open.
 3|Timeout occurred when expecting pattern.
 4|The operating system returned an error when spawning process.

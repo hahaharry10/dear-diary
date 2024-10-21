@@ -8,16 +8,19 @@ RESET="\e[0m"
 getErrMessage () {
     case $3 in
         1)
-            errMessage="$1 Usage error."
+            errMessage="$1 Usage error. Command, function, or file was called incorrectly."
             ;;
         2)
             errMessage="$1 Desired text editor failed to open."
             ;;
         3)
-            errMessage="$1 Timeout occurred when expecting eof"
+            errMessage="$1 Timeout occurred when expecting pattern."
             ;;
         4)
-            errMessage="$1 OS level error."
+            errMessage="$1 Operating system returned an error when spawning process."
+            ;;
+        5)
+            errMessage="$1 eof detected prematurely."
             ;;
         255)
             errMessage="$1 Feature not implemented."
@@ -95,8 +98,9 @@ if [[ -f $FILE ]]
 then
     rm $FILE
 fi
+PASSWORD="TeStPaSsWoRd"
 errNum=0
-./test2.exp $FILE 1>/dev/null
+./test2.exp $FILE $PASSWORD 1>/dev/null
 errCode=$?
 if [[ $errCode != 0 ]] 
 then
