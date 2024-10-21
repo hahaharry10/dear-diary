@@ -48,6 +48,7 @@ cd test/
 
 failNum=0 # Track number of tests that have failed.
 FILE="test.txt"
+MESSAGE="Hello World!"
 
 ######################## Test MVP: ##########################
 # NOTE: Tests...
@@ -61,7 +62,7 @@ FILE="test.txt"
 #       - The file does not get created in the end (file does not exist before or after execution).
 #
 errNum=0
-./test1.exp $FILE 1>/dev/null
+./test1.exp $FILE "$MESSAGE" 1>/dev/null
 errCode=$?
 if [[ $errCode != 0 ]] 
 then
@@ -100,7 +101,7 @@ then
 fi
 PASSWORD="TeStPaSsWoRd"
 errNum=0
-./test2.exp $FILE $PASSWORD 1>/dev/null
+./test2.exp $FILE "$PASSWORD" "$MESSAGE" 1>/dev/null
 errCode=$?
 if [[ $errCode != 0 ]] 
 then
