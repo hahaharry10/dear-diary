@@ -34,11 +34,11 @@ expect {
     } eof {
         catch wait result ;# eof encountered too quickly. See returned error.
         if { [lindex $result 2] == -1 } {
-            puts "OS Error: Error when executing command.\n"
+            puts "OS Error: Error when expecting vim.\n"
             set errCode 4 ;# OS error.
         } else {
             puts "Vim Error: eof found instead of vim\n"
-            set errCode [lindex $result 3]
+            set errCode 5 ;# Early eof error.
         }
     }
 }

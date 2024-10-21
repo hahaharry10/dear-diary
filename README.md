@@ -53,8 +53,9 @@ Error Code | Description
 0|Successful execution.
 1|Usage error. The command, function, file, was called incorrectly.
 2|Desired text editor failed to open.
-3|Timeout occurred when expecting eof.
+3|Timeout occurred when expecting pattern.
 4|The operating system returned an error when spawning process.
+5|`eof` detected prematurely.
 255|Feature being tested has not yet been implemented.
 
 
