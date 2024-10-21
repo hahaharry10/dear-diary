@@ -2,6 +2,7 @@
 
 # TEST: File not in directory. and nothing saved (file remains not in directory).
 if { [llength $argv] != 1 } {
+    puts "Usage Error. Usage: ./test1.exp new_file\n"
     exit 1
 }
 set FILE [lindex $argv 0]
@@ -16,21 +17,27 @@ expect {
             eof {
                 catch wait result
                 if { [lindex $result 2] == -1 } {
+                    puts "OS Error: Error when executing command.\n"
                     set errCode 4 ;# OS error.
                 } else {
+                    puts "Getting command error value..."
                     set errCode [lindex $result 3]
                 }
             } timeout {
+                puts "Timeout Error: Expected eof.\n"
                 set errCode 3 ;# timeout when expecting pattern.
             }
         }
     } timeout {
+        puts "Timeout Error: Failed to recognise vim\n"
         set errCode 2 ;# Vim failed to open.
     } eof {
         catch wait result ;# eof encountered too quickly. See returned error.
         if { [lindex $result 2] == -1 } {
+            puts "OS Error: Error when executing command.\n"
             set errCode 4 ;# OS error.
         } else {
+            puts "Vim Error: eof found instead of vim\n"
             set errCode [lindex $result 3]
         }
     }
