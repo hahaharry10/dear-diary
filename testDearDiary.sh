@@ -4,6 +4,32 @@ GREEN="\e[1;32m"
 RED="\e[1;31m"
 RESET="\e[0m"
 
+# Arguments in order of: [errMessage] [test number] [errCode]
+getErrMessage () {
+    case $3 in
+        1)
+            errMessage="$1 Usage error."
+            ;;
+        2)
+            errMessage="$1 Desired text editor failed to open."
+            ;;
+        3)
+            errMessage="$1 Timeout occurred when expecting eof"
+            ;;
+        4)
+            errMessage="$1 OS level error."
+            ;;
+        255)
+            errMessage="$1 Feature not implemented."
+            ;;
+        *)
+            errMessage="$1 Uncaught Error."
+            ;;
+    esac
+
+    echo -e $errMessage
+}
+
 if [[ -d test/ ]]
 then
     echo -e "${RED}ERROR!${RESET} Directory named 'test/' exists. Please remove or rename directory."
@@ -36,24 +62,7 @@ errCode=$?
 if [[ $errCode != 0 ]] 
 then
     errMessage="Test 1: ${RED}ERROR${RESET} ($errCode):"
-    if [[ $errCode = 1 ]]
-    then
-        errMessage="$errMessage test1.exp called without a file."
-    elif [[ $errCode = 2 ]]
-    then
-        errMessage="$errMessage Desired text editor failed to open."
-    elif [[ $errCode = 3 ]]
-    then
-        errMessage="$errMessage Timeout occurred when expecting eof"
-    elif [[ $errCode = 4 ]]
-    then
-        errMessage="$errMessage OS level error."
-    elif [[ $errCode = 255 ]]
-    then
-        errMessage="$errMessage Feature not implemented."
-    else
-        errMessage="$errMessage Uncaught Error."
-    fi
+    errMessage=$(getErrMessage "Test 1: ${RED}ERROR${RESET} ($errCode):" 1 $errCode)
     ((++errNum))
     echo -e $errMessage
 fi
