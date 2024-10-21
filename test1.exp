@@ -21,7 +21,7 @@ expect {
                     set errCode [lindex $result 3]
                 }
             } timeout {
-                set errCode 3 ;# timeout when expecting eof.
+                set errCode 3 ;# timeout when expecting pattern.
             }
         }
     } timeout {
