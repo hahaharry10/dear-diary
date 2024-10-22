@@ -31,7 +31,7 @@ expect {
 
 expect {
     "Password:" {
-        send $PASSWORD
+        send "$PASSWORD\r"
     } timeout {
         puts "Timeout Error: Failed to recognise \"Password:\" prompt.\n"
         exit 3 ;# timeout occurred when expecting pattern.
@@ -49,7 +49,7 @@ expect {
 
 expect {
     "Confirm Password:" {
-        send $PASSWORD
+        send "$PASSWORD\r"
     } timeout {
         puts "Timeout Error: Failed to recognise \"Confirm Password:\" prompt.\n"
         exit 3 ;# timeout occurred when expecting pattern.
@@ -74,7 +74,7 @@ expect {
         } else {
             set returnVal [lindex $result 3]
             puts "Returning with error code $returnVal\n"
-            exit returnVal
+            exit $returnVal
         }
     } timeout {
         puts "Timeout Error: Failed to recognise eof.\n"
