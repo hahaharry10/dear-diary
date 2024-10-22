@@ -44,10 +44,12 @@ mkdir test/
 cp ./dear-diary.sh test/
 cp ./test1.exp test/test1.exp
 cp ./test2.exp test/test2.exp
+cp ./test3.exp test/test3.exp
 cd test/
 
 failNum=0 # Track number of tests that have failed.
 FILE="test.txt"
+PASSWORD="TeStPaSsWoRd"
 MESSAGE="Hello World!"
 
 ######################## Test MVP: ##########################
@@ -57,10 +59,6 @@ MESSAGE="Hello World!"
 #   3) File not in directory. And text is inserted and saved. Password is created. Password fails confirmation. Password is then created and confirmed correctly. Encryption is tested.
 
 # TEST: 1.
-#   Requirements for passing:
-#       - expect script spawns and interacts with dear-diary successfully.
-#       - The file does not get created in the end (file does not exist before or after execution).
-#
 errNum=0
 ./test1.exp $FILE "$MESSAGE" 1>/dev/null
 errCode=$?
@@ -88,18 +86,10 @@ fi
 
 
 # TEST: 2:
-#   Requirements for passing:
-#       - expect script spawns and interacts with dear-diary successfully.
-#           1) File is saved.
-#           2) Password entered.
-#           3) Password re-entered correctly.
-#       - File persists in directory with following standard $FILE.dd (e.g. if file is 'foo.txt' the resulting file is 'foo.txt.dd')
-#       - Contents of the file do not match original message.
 if [[ -f $FILE ]]
 then
     rm $FILE
 fi
-PASSWORD="TeStPaSsWoRd"
 errNum=0
 ./test2.exp $FILE "$PASSWORD" "$MESSAGE" 1>/dev/null
 errCode=$?
@@ -116,7 +106,6 @@ then
     echo -e "Test 2: ${RED}ERROR${RESET} $FILE.dd not in directory."
 else
     echo $MESSAGE > tmp.txt
-    # TODO: Add feature checking that the file contents are changed (i.e. encrypted)
     if cmp -s tmp.txt "$FILE.dd";
     then
         ((++errNum))
@@ -124,12 +113,42 @@ else
     fi
 fi
 
+# TEST: 3:
+if [[ -f $FILE ]]
+then
+    rm $FILE
+fi
+errNum=0
+./test3.exp $FILE "$PASSWORD" "$MESSAGE" 1>/dev/null
+errCode=$?
+if [[ $errCode != 0 ]] 
+then
+    errMessage=$(getErrMessage "Test 3: ${RED}ERROR${RESET} ($errCode):" 2 $errCode)
+    ((++errNum))
+    echo -e $errMessage
+fi
+
+if [[ ! -f $FILE.dd ]]
+then
+    ((++errNum))
+    echo -e "Test 3: ${RED}ERROR${RESET} $FILE.dd not in directory."
+else
+    echo $MESSAGE > tmp.txt
+    if cmp -s tmp.txt "$FILE.dd";
+    then
+        ((++errNum))
+        echo -e "Test 3: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged."
+    fi
+fi
+
+
+
 if [[ errNum = 0 ]]
 then
-    echo -e "Test 2: ${GREEN}PASSED${RESET}"
+    echo -e "Test 3: ${GREEN}PASSED${RESET}"
 else
     ((++failNum))
-    echo -e "Test 2: ${RED}FAILED${RESET} $errNum tests."
+    echo -e "Test 3: ${RED}FAILED${RESET} $errNum tests."
 fi
 
 
