@@ -110,10 +110,18 @@ then
     echo -e $errMessage
 fi
 
-if [[ ! -f $FILE ]]
+if [[ ! -f $FILE.dd ]]
 then
     ((++errNum))
-    echo -e "Test 2: ${RED}ERROR${RESET} File should persist in directory."
+    echo -e "Test 2: ${RED}ERROR${RESET} $FILE.dd not in directory."
+else
+    echo $MESSAGE > tmp.txt
+    # TODO: Add feature checking that the file contents are changed (i.e. encrypted)
+    if cmp -s tmp.txt "$FILE.dd";
+    then
+        ((++errNum))
+        echo -e "Test 2: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged."
+    fi
 fi
 
 if [[ errNum = 0 ]]
