@@ -100,13 +100,13 @@ then
     echo -e $errMessage
 fi
 
-if [[ ! -f $FILE.dd ]]
+if [[ ! -f $FILE.drd ]]
 then
     ((++errNum))
-    echo -e "Test 2: ${RED}ERROR${RESET} $FILE.dd not in directory."
+    echo -e "Test 2: ${RED}ERROR${RESET} $FILE.drd not in directory."
 else
     echo $MESSAGE > tmp.txt
-    if cmp -s tmp.txt "$FILE.dd";
+    if cmp -s tmp.txt "$FILE.drd";
     then
         ((++errNum))
         echo -e "Test 2: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged."
@@ -128,13 +128,13 @@ then
     echo -e $errMessage
 fi
 
-if [[ ! -f $FILE.dd ]]
+if [[ ! -f $FILE.drd ]]
 then
     ((++errNum))
-    echo -e "Test 3: ${RED}ERROR${RESET} $FILE.dd not in directory."
+    echo -e "Test 3: ${RED}ERROR${RESET} $FILE.drd not in directory."
 else
     echo $MESSAGE > tmp.txt
-    if cmp -s tmp.txt "$FILE.dd";
+    if cmp -s tmp.txt "$FILE.drd";
     then
         ((++errNum))
         echo -e "Test 3: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged."
