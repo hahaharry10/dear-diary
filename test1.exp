@@ -2,7 +2,7 @@
 
 # TEST: File not in directory. and nothing saved (file remains not in directory).
 if { [llength $argv] != 2 } {
-    puts "Usage Error. Usage: ./test1.exp new_file\n"
+    puts "Usage Error. Usage: ./test1.exp new_file message\n"
     exit 1
 }
 set FILE [lindex $argv 0]
