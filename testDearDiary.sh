@@ -33,6 +33,21 @@ getErrMessage () {
     echo -e $errMessage
 }
 
+clearFiles () {
+    if [[ -f $1 ]]
+    then
+        rm $1
+    fi
+    if [[ -f "$1.drd" ]]
+    then
+        rm "$1.drd"
+    fi
+    if [[ -f "tmp.txt" ]]
+    then
+        rm tmp.txt
+    fi
+}
+
 if [[ -d test/ ]]
 then
     echo -e "${RED}ERROR!${RESET} Directory named 'test/' exists. Please remove or rename directory."
@@ -45,6 +60,8 @@ cp ./dear-diary.sh test/
 cp ./test1.exp test/test1.exp
 cp ./test2.exp test/test2.exp
 cp ./test3.exp test/test3.exp
+cp ./test5.exp test/test5.exp
+cp ./test6.exp test/test6.exp
 cd test/
 
 failNum=0 # Track number of tests that have failed.
@@ -57,7 +74,9 @@ MESSAGE="Hello World!"
 #   1) File not in directory. And nothing saved (file still does not exist).
 #   2) File not in directory. And text is inserted and saved. Password is created. Password is confirmed successfully. Encryption is tested.
 #   3) File not in directory. And text is inserted and saved. Password is created. Password fails confirmation. Password is then created and confirmed incorrectly 3 more times before confirmed correctly. Encryption is tested.
-#   4) File in directory. File is not .drd. File is eddited and saved. Password is created. Password is confirmed. (Similar to test 2 but file already exists).
+#   4) File in directory. File is not .drd. File is edited and saved. Password is created. Password is confirmed. (Similar to test 2 but file already exists).
+#   5) File in directory. File is .drd file. Password is inputted correctly.File is decrypted and edited. File is encrypted using old password.
+#   6) File in directory. File is .drd file. Password is inputted incorrectly.
 
 # TEST: 1.
 errNum=0
@@ -87,10 +106,7 @@ fi
 
 
 # TEST: 2:
-if [[ -f $FILE ]]
-then
-    rm $FILE
-fi
+clearFiles $FILE
 errNum=0
 ./test2.exp $FILE "$PASSWORD" "$MESSAGE" 1>/dev/null
 errCode=$?
@@ -115,10 +131,7 @@ else
 fi
 
 # TEST: 3:
-if [[ -f $FILE ]]
-then
-    rm $FILE
-fi
+clearFiles $FILE
 errNum=0
 ./test3.exp $FILE "$PASSWORD" "$MESSAGE" 1>/dev/null
 errCode=$?
@@ -143,18 +156,10 @@ else
 fi
 
 # TEST: 4:
-#   4) File in directory. File is not .drd. File is eddited and saved. Password is created. Password is confirmed.
-if [[ -f $FILE ]]
-then
-    rm $FILE
-fi
-if [[ -f "$FILE.drd" ]]
-then
-    rm "$FILE.drd"
-fi
+clearFiles $FILE
 echo "Pre-existing file for test 4." > $FILE
 errNum=0
-./test2.exp $FILE $PASSWORD $MESSAGE # Reuse test script for test 2.
+./test2.exp $FILE "$PASSWORD" "$MESSAGE"  1>/dev/null # Reuse test script for test 2.
 errCode=$?
 if [[ $errCode != 0 ]] 
 then
@@ -182,6 +187,96 @@ then
 else
     ((++failNum))
     echo -e "Test 4: ${RED}FAILED${RESET} $errNum tests."
+fi
+
+# TEST: 5:
+clearFiles $FILE
+# Create .drd file:
+t5_message="Pre-existing file for test 5."
+echo "$t5_message" > $FILE
+gpg --batch --yes --passphrase "$PASSWORD" --cipher-algo AES256 --symmetric -o "$FILE.drd" $FILE > /dev/null 2>&1
+errNum=0
+./test5.exp $FILE "$PASSWORD" "$MESSAGE"  1>/dev/null
+errCode=$?
+if [[ $errCode != 0 ]] 
+then
+    errMessage=$(getErrMessage "Test 5: ${RED}ERROR${RESET} ($errCode):" 5 $errCode)
+    ((++errNum))
+    echo -e $errMessage
+fi
+
+if [[ ! -f "$FILE.drd" ]]
+then
+    ((++errNum))
+    echo -e "Test 5: ${RED}ERROR${RESET} $FILE.drd not in directory."
+else
+    gpg --batch --yes --passphrase "$PASSWORD" --decrypt -o $FILE "$FILE.drd" > /dev/null 2>&1
+    gpgErrCode=$?
+    if [[ $gpgErrCode != 0 ]]
+    then
+        ((++errNum))
+        echo -e "Test 5: ${RED}ERROR${RESET} gpg decryption failed with expected passkey."
+    else
+        echo "${t5_message}${MESSAGE}" > tmp.txt
+        if ! cmp -s tmp.txt $FILE;
+        then
+            ((++errNum))
+            echo -e "Test 5: ${RED}ERROR${RESET} Unexpected file contents. Decryption and modification failed."
+        fi
+    fi
+fi
+
+if [[ errNum = 0 ]]
+then
+    echo -e "Test 5: ${GREEN}PASSED${RESET}"
+else
+    ((++failNum))
+    echo -e "Test 5: ${RED}FAILED${RESET} $errNum tests."
+fi
+
+# TEST: 6:
+clearFiles $FILE
+# Create .drd file:
+t6_message="Pre-existing file for test 6."
+echo "$t6_message" > $FILE
+gpg --batch --yes --passphrase "$PASSWORD" --cipher-algo AES256 --symmetric -o "$FILE.drd" $FILE > /dev/null 2>&1
+errNum=0
+./test6.exp $FILE "$PASSWORD" "$MESSAGE"  1>/dev/null
+errCode=$?
+if [[ $errCode != 0 ]] 
+then
+    errMessage=$(getErrMessage "Test 6: ${RED}ERROR${RESET} ($errCode):" 6 $errCode)
+    ((++errNum))
+    echo -e $errMessage
+fi
+
+if [[ ! -f "$FILE.drd" ]]
+then
+    ((++errNum))
+    echo -e "Test 6: ${RED}ERROR${RESET} $FILE.drd not in directory."
+fi
+
+gpg --batch --yes --passphrase "$PASSWORD" --decrypt -o $FILE "$FILE.drd" > /dev/null 2>&1
+gpgErrCode=$?
+if [[ $gpgErrCode != 0 ]]
+then
+    ((++errNum))
+    echo -e "Test 6: ${RED}ERROR${RESET} gpg decryption failed with expected passkey."
+else
+    echo "${t5_message}" > tmp.txt
+    if cmp -s tmp.txt $FILE;
+    then
+        ((++errNum))
+        echo -e "Test 6: ${RED}ERROR${RESET} Unexpected file contents. File was unexpectedly modified."
+    fi
+fi
+
+if [[ errNum = 0 ]]
+then
+    echo -e "Test 6: ${GREEN}PASSED${RESET}"
+else
+    ((++failNum))
+    echo -e "Test 6: ${RED}FAILED${RESET} $errNum tests."
 fi
 
 
