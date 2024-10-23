@@ -54,9 +54,10 @@ MESSAGE="Hello World!"
 
 ######################## Test MVP: ##########################
 # NOTE: Tests...
-#   1) File not in directory. and nothing saved (file still does not exist).
+#   1) File not in directory. And nothing saved (file still does not exist).
 #   2) File not in directory. And text is inserted and saved. Password is created. Password is confirmed successfully. Encryption is tested.
-#   3) File not in directory. And text is inserted and saved. Password is created. Password fails confirmation. Password is then created and confirmed correctly. Encryption is tested.
+#   3) File not in directory. And text is inserted and saved. Password is created. Password fails confirmation. Password is then created and confirmed incorrectly 3 more times before confirmed correctly. Encryption is tested.
+#   4) File in directory. File is not .drd. File is eddited and saved. Password is created. Password is confirmed. (Similar to test 2 but file already exists).
 
 # TEST: 1.
 errNum=0
@@ -123,7 +124,7 @@ errNum=0
 errCode=$?
 if [[ $errCode != 0 ]] 
 then
-    errMessage=$(getErrMessage "Test 3: ${RED}ERROR${RESET} ($errCode):" 2 $errCode)
+    errMessage=$(getErrMessage "Test 3: ${RED}ERROR${RESET} ($errCode):" 3 $errCode)
     ((++errNum))
     echo -e $errMessage
 fi
@@ -141,14 +142,46 @@ else
     fi
 fi
 
+# TEST: 4:
+#   4) File in directory. File is not .drd. File is eddited and saved. Password is created. Password is confirmed.
+if [[ -f $FILE ]]
+then
+    rm $FILE
+fi
+if [[ -f "$FILE.drd" ]]
+then
+    rm "$FILE.drd"
+fi
+echo "Pre-existing file for test 4." > $FILE
+errNum=0
+./test2.exp $FILE $PASSWORD $MESSAGE # Reuse test script for test 2.
+errCode=$?
+if [[ $errCode != 0 ]] 
+then
+    errMessage=$(getErrMessage "Test 4: ${RED}ERROR${RESET} ($errCode):" 4 $errCode)
+    ((++errNum))
+    echo -e $errMessage
+fi
 
+if [[ ! -f $FILE.drd ]]
+then
+    ((++errNum))
+    echo -e "Test 4: ${RED}ERROR${RESET} $FILE.drd not in directory."
+else
+    echo $MESSAGE > tmp.txt
+    if cmp -s tmp.txt "$FILE.drd";
+    then
+        ((++errNum))
+        echo -e "Test 4: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged."
+    fi
+fi
 
 if [[ errNum = 0 ]]
 then
-    echo -e "Test 3: ${GREEN}PASSED${RESET}"
+    echo -e "Test 4: ${GREEN}PASSED${RESET}"
 else
     ((++failNum))
-    echo -e "Test 3: ${RED}FAILED${RESET} $errNum tests."
+    echo -e "Test 4: ${RED}FAILED${RESET} $errNum tests."
 fi
 
 
