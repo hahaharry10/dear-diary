@@ -19,7 +19,7 @@ $ dear-diary [file]
 ```
 
 And will have the following design:
-![image](https://github.com/user-attachments/assets/ea2e4b62-88ca-45d1-9640-5b413c3c1f70)
+![](./flowchart.excalidraw)
 
 ### Additional Features:
 Additional features contribute to the final product but are beyond the MVP.
