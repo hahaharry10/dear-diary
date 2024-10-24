@@ -4,20 +4,20 @@
 createNewPassword () {
     while :
     do
-        echo -en "Password:"
+        echo -en "Password:" >&2
         read -s PASSWORD
-        echo -en "Confirm Password:"
+        echo -en "Confirm Password:" >&2
         read -s CONFIRMED_PASSWORD
 
         if [[ $PASSWORD = $CONFIRMED_PASSWORD ]]
         then
             break
         else
-            echo -en "Passwords Do not match.\n"
+            echo -en "Passwords Do not match.\n" >&2
         fi
     done
 
-    echo $PASSWORD
+    echo $PASSWORD >&1 # output to stderr
 }
 
 if [[ $# != 1 ]]
@@ -42,7 +42,7 @@ then
     fi
 
     # Get password:
-    PASSWORD="$(createNewPassword)"
+    PASSWORD="$(createNewPassword)" # Capture from stderr
 
     # Encrypt file:
     gpg --batch --yes --passphrase "$PASSWORD" --cipher-algo AES256 --symmetric -o "$FILE.drd" $FILE > /dev/null 2>&1
@@ -59,6 +59,7 @@ then
     fi
     shred -u $FILE
 else
+    echo -en "Password:"
     read -s PASSWORD
     gpg --batch --yes --passphrase "$PASSWORD" --decrypt -o "${FILE%.*}" $FILE
     errCode=$?
