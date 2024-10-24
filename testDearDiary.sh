@@ -53,7 +53,6 @@ then
     echo -e "${RED}ERROR!${RESET} Directory named 'test/' exists. Please remove or rename directory."
     exit 1
 fi
-    
 
 mkdir test/
 cp ./dear-diary.sh test/
@@ -96,7 +95,7 @@ then
     echo -e "Test 1: ${RED}ERROR${RESET} File should not persist in directory."
 fi
 
-if [[ errNum = 0 ]]
+if [[ errNum -eq 0 ]]
 then
     echo -e "Test 1: ${GREEN}PASSED${RESET}"
 else
@@ -130,6 +129,14 @@ else
     fi
 fi
 
+if [[ errNum -eq 0 ]]
+then
+    echo -e "Test 2: ${GREEN}PASSED${RESET}"
+else
+    ((++failNum))
+    echo -e "Test 2: ${RED}FAILED${RESET} $errNum tests."
+fi
+
 # TEST: 3:
 clearFiles $FILE
 errNum=0
@@ -153,6 +160,14 @@ else
         ((++errNum))
         echo -e "Test 3: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged."
     fi
+fi
+
+if [[ errNum -eq 0 ]]
+then
+    echo -e "Test 3: ${GREEN}PASSED${RESET}"
+else
+    ((++failNum))
+    echo -e "Test 3: ${RED}FAILED${RESET} $errNum tests."
 fi
 
 # TEST: 4:
@@ -181,7 +196,7 @@ else
     fi
 fi
 
-if [[ errNum = 0 ]]
+if [[ errNum -eq 0 ]]
 then
     echo -e "Test 4: ${GREEN}PASSED${RESET}"
 else
@@ -226,7 +241,7 @@ else
     fi
 fi
 
-if [[ errNum = 0 ]]
+if [[ errNum -eq 0 ]]
 then
     echo -e "Test 5: ${GREEN}PASSED${RESET}"
 else
@@ -271,7 +286,7 @@ else
     fi
 fi
 
-if [[ errNum = 0 ]]
+if [[ errNum -eq 0 ]]
 then
     echo -e "Test 6: ${GREEN}PASSED${RESET}"
 else
