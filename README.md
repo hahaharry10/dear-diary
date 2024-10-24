@@ -19,7 +19,7 @@ $ dear-diary [file]
 ```
 
 And will have the following design:
-![Flowchart showing operations of dear-diary MVP](https://github.com/user-attachments/assets/ccc1d534-8c4f-4ae5-8b7c-99e81f5cc321)
+![Flowchart showing operations of dear-diary MVP](https://github.com/user-attachments/assets/f371f4e9-19f4-4f1f-93b7-24706027ecf7)
 
 
 ### Additional Features:
