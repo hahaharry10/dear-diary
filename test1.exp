@@ -8,7 +8,7 @@ if { [llength $argv] != 2 } {
 set FILE [lindex $argv 0]
 set MESSAGE [lindex $argv 0]
 
-set timeout 1
+set timeout -1
 
 spawn dear-diary $FILE
 expect {
