@@ -6,8 +6,10 @@ createNewPassword () {
     do
         echo -en "Password:" >&2
         read -s PASSWORD
+        echo -en "\n" >&2
         echo -en "Confirm Password:" >&2
         read -s CONFIRMED_PASSWORD
+        echo -en "\n" >&2
 
         if [[ $PASSWORD = $CONFIRMED_PASSWORD ]]
         then
