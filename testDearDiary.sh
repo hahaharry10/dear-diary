@@ -211,7 +211,7 @@ t5_message="Pre-existing file for test 5."
 echo "$t5_message" > $FILE
 gpg --batch --yes --passphrase "$PASSWORD" --cipher-algo AES256 --symmetric -o "$FILE.drd" $FILE > /dev/null 2>&1
 errNum=0
-./test5.exp $FILE "$PASSWORD" "$MESSAGE"  1>/dev/null
+./test5.exp "$FILE.drd" "$PASSWORD" "$MESSAGE"  1>/dev/null
 errCode=$?
 if [[ $errCode != 0 ]] 
 then
@@ -233,7 +233,7 @@ else
         echo -e "Test 5: ${RED}ERROR${RESET} gpg decryption failed with expected passkey."
     else
         echo "${t5_message}${MESSAGE}" > tmp.txt
-        if ! cmp -s tmp.txt $FILE;
+        if cmp -s tmp.txt $FILE;
         then
             ((++errNum))
             echo -e "Test 5: ${RED}ERROR${RESET} Unexpected file contents. Decryption and modification failed."
