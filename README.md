@@ -59,6 +59,17 @@ Error Code | Description
 5|`eof` detected prematurely.
 255|Feature being tested has not yet been implemented.
 
+### Changing shebang:
+The location of `bash` and `expect` may be different on your system. Therefore you may have to check the shebang. The repo's default is:
+- Bash: `/bin/bash`
+- Expect: `/bin/expect`
+
+To change the shebang, you can either:
+- Execute `which expect` or `which bash` and modify files manually using desired text editor.
+- Use `sed`:
+    - `sed -i "s|^#\!/.*|#\!$(which expect)|" *.exp` changes expect script shebang.
+    - `sed -i "s|^#\!/.*|#\!$(which bash)|" *.sh` changes bash script shebang.
+
 ### Execution:
 To execute `dear-diary` as a command, follow these steps:
 1. Create a `bin/` directory in `.local`:
