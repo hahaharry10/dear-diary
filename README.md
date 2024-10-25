@@ -98,3 +98,7 @@ Now you should be able to run the `dear-diary` anywhere.
 NOTE:
 - If you want to keep this feature in all future sessions, append `export PATH="$HOME/.local/bin/:$PATH"` to your shell configuration file.
 - If changes are made to `dear-diary.sh`, you must re-copy the file to `~/.local/bin/` to implement the changes.
+
+### Dependencies:
+- gpg
+- expect
