@@ -24,8 +24,6 @@ And will have the following design:
 
 ### Additional Features:
 Additional features contribute to the final product but are beyond the MVP.
-
-Additional Features:
 - Execution options:
 	- [ ] `Usage: dear-diary [options] [file]`
 	- [ ] `-h` Display help.
