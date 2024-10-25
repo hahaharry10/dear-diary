@@ -30,7 +30,7 @@ getErrMessage () {
             ;;
     esac
 
-    echo -e $errMessage
+    printf $errMessage
 }
 
 clearFiles () {
@@ -50,7 +50,7 @@ clearFiles () {
 
 if [[ -d test/ ]]
 then
-    echo -e "${RED}ERROR!${RESET} Directory named 'test/' exists. Please remove or rename directory."
+    printf "${RED}ERROR!${RESET} Directory named 'test/' exists. Please remove or rename directory.\n"
     exit 1
 fi
 
@@ -85,22 +85,22 @@ if [[ $errCode != 0 ]]
 then
     errMessage=$(getErrMessage "Test 1: ${RED}ERROR${RESET} ($errCode):" 1 $errCode)
     ((++errNum))
-    echo -e $errMessage
+    printf $errMessage
 fi
 
 # Check file still does not exist:
 if [[ -f $FILE ]]
 then
     ((++errNum))
-    echo -e "Test 1: ${RED}ERROR${RESET} File should not persist in directory."
+    printf "Test 1: ${RED}ERROR${RESET} File should not persist in directory.\n"
 fi
 
 if [[ errNum -eq 0 ]]
 then
-    echo -e "Test 1: ${GREEN}PASSED${RESET}"
+    printf "Test 1: ${GREEN}PASSED${RESET}\n"
 else
     ((++failNum))
-    echo -e "Test 1: ${RED}FAILED${RESET} $errNum tests."
+    printf "Test 1: ${RED}FAILED${RESET} $errNum tests.\n"
 fi
 
 
@@ -113,28 +113,28 @@ if [[ $errCode != 0 ]]
 then
     errMessage=$(getErrMessage "Test 2: ${RED}ERROR${RESET} ($errCode):" 2 $errCode)
     ((++errNum))
-    echo -e $errMessage
+    printf $errMessage
 fi
 
 if [[ ! -f $FILE.drd ]]
 then
     ((++errNum))
-    echo -e "Test 2: ${RED}ERROR${RESET} $FILE.drd not in directory."
+    printf "Test 2: ${RED}ERROR${RESET} $FILE.drd not in directory.\n"
 else
     echo $MESSAGE > tmp.txt
     if cmp -s tmp.txt "$FILE.drd";
     then
         ((++errNum))
-        echo -e "Test 2: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged."
+        printf "Test 2: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged.\n"
     fi
 fi
 
 if [[ errNum -eq 0 ]]
 then
-    echo -e "Test 2: ${GREEN}PASSED${RESET}"
+    printf "Test 2: ${GREEN}PASSED${RESET}\n"
 else
     ((++failNum))
-    echo -e "Test 2: ${RED}FAILED${RESET} $errNum tests."
+    printf "Test 2: ${RED}FAILED${RESET} $errNum tests.\n"
 fi
 
 # TEST: 3:
@@ -146,28 +146,28 @@ if [[ $errCode != 0 ]]
 then
     errMessage=$(getErrMessage "Test 3: ${RED}ERROR${RESET} ($errCode):" 3 $errCode)
     ((++errNum))
-    echo -e $errMessage
+    printf $errMessage
 fi
 
 if [[ ! -f $FILE.drd ]]
 then
     ((++errNum))
-    echo -e "Test 3: ${RED}ERROR${RESET} $FILE.drd not in directory."
+    printf "Test 3: ${RED}ERROR${RESET} $FILE.drd not in directory.\n"
 else
     echo $MESSAGE > tmp.txt
     if cmp -s tmp.txt "$FILE.drd";
     then
         ((++errNum))
-        echo -e "Test 3: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged."
+        printf "Test 3: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged.\n"
     fi
 fi
 
 if [[ errNum -eq 0 ]]
 then
-    echo -e "Test 3: ${GREEN}PASSED${RESET}"
+    printf "Test 3: ${GREEN}PASSED${RESET}\n"
 else
     ((++failNum))
-    echo -e "Test 3: ${RED}FAILED${RESET} $errNum tests."
+    printf "Test 3: ${RED}FAILED${RESET} $errNum tests.\n"
 fi
 
 # TEST: 4:
@@ -180,28 +180,28 @@ if [[ $errCode != 0 ]]
 then
     errMessage=$(getErrMessage "Test 4: ${RED}ERROR${RESET} ($errCode):" 4 $errCode)
     ((++errNum))
-    echo -e $errMessage
+    printf $errMessage
 fi
 
 if [[ ! -f $FILE.drd ]]
 then
     ((++errNum))
-    echo -e "Test 4: ${RED}ERROR${RESET} $FILE.drd not in directory."
+    printf "Test 4: ${RED}ERROR${RESET} $FILE.drd not in directory.\n"
 else
     echo $MESSAGE > tmp.txt
     if cmp -s tmp.txt "$FILE.drd";
     then
         ((++errNum))
-        echo -e "Test 4: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged."
+        printf "Test 4: ${RED}ERROR${RESET} No encryption occurred, file contents are unchanged.\n"
     fi
 fi
 
 if [[ errNum -eq 0 ]]
 then
-    echo -e "Test 4: ${GREEN}PASSED${RESET}"
+    printf "Test 4: ${GREEN}PASSED${RESET}\n"
 else
     ((++failNum))
-    echo -e "Test 4: ${RED}FAILED${RESET} $errNum tests."
+    printf "Test 4: ${RED}FAILED${RESET} $errNum tests.\n"
 fi
 
 # TEST: 5:
@@ -217,36 +217,36 @@ if [[ $errCode != 0 ]]
 then
     errMessage=$(getErrMessage "Test 5: ${RED}ERROR${RESET} ($errCode):" 5 $errCode)
     ((++errNum))
-    echo -e $errMessage
+    printf $errMessage
 fi
 
 if [[ ! -f "$FILE.drd" ]]
 then
     ((++errNum))
-    echo -e "Test 5: ${RED}ERROR${RESET} $FILE.drd not in directory."
+    printf "Test 5: ${RED}ERROR${RESET} $FILE.drd not in directory.\n"
 else
     gpg --batch --yes --passphrase "$PASSWORD" --decrypt -o $FILE "$FILE.drd" > /dev/null 2>&1
     gpgErrCode=$?
     if [[ $gpgErrCode != 0 ]]
     then
         ((++errNum))
-        echo -e "Test 5: ${RED}ERROR${RESET} gpg decryption failed with expected passkey."
+        printf "Test 5: ${RED}ERROR${RESET} gpg decryption failed with expected passkey.\n"
     else
         echo "${t5_message}${MESSAGE}" > tmp.txt
         if cmp -s tmp.txt $FILE;
         then
             ((++errNum))
-            echo -e "Test 5: ${RED}ERROR${RESET} Unexpected file contents. Decryption and modification failed."
+            printf "Test 5: ${RED}ERROR${RESET} Unexpected file contents. Decryption and modification failed.\n"
         fi
     fi
 fi
 
 if [[ errNum -eq 0 ]]
 then
-    echo -e "Test 5: ${GREEN}PASSED${RESET}"
+    printf "Test 5: ${GREEN}PASSED${RESET}\n"
 else
     ((++failNum))
-    echo -e "Test 5: ${RED}FAILED${RESET} $errNum tests."
+    printf "Test 5: ${RED}FAILED${RESET} $errNum tests.\n"
 fi
 
 # TEST: 6:
@@ -262,13 +262,13 @@ if [[ $errCode != 2 ]]
 then
     errMessage=$(getErrMessage "Test 6: ${RED}ERROR${RESET} ($errCode):" 6 $errCode)
     ((++errNum))
-    echo -e $errMessage
+    printf $errMessage
 fi
 
 if [[ ! -f "$FILE.drd" ]]
 then
     ((++errNum))
-    echo -e "Test 6: ${RED}ERROR${RESET} $FILE.drd not in directory."
+    printf "Test 6: ${RED}ERROR${RESET} $FILE.drd not in directory.\n"
 fi
 
 gpg --batch --yes --passphrase "$PASSWORD" --decrypt -o $FILE "$FILE.drd" > /dev/null 2>&1
@@ -276,22 +276,22 @@ gpgErrCode=$?
 if [[ $gpgErrCode != 0 ]]
 then
     ((++errNum))
-    echo -e "Test 6: ${RED}ERROR${RESET} gpg decryption failed with expected passkey."
+    printf "Test 6: ${RED}ERROR${RESET} gpg decryption failed with expected passkey.\n"
 else
     echo "${t5_message}" > tmp.txt
     if cmp -s tmp.txt $FILE;
     then
         ((++errNum))
-        echo -e "Test 6: ${RED}ERROR${RESET} Unexpected file contents. File was unexpectedly modified."
+        printf "Test 6: ${RED}ERROR${RESET} Unexpected file contents. File was unexpectedly modified.\n"
     fi
 fi
 
 if [[ errNum -eq 0 ]]
 then
-    echo -e "Test 6: ${GREEN}PASSED${RESET}"
+    printf "Test 6: ${GREEN}PASSED${RESET}\n"
 else
     ((++failNum))
-    echo -e "Test 6: ${RED}FAILED${RESET} $errNum tests."
+    printf "Test 6: ${RED}FAILED${RESET} $errNum tests.\n"
 fi
 
 
