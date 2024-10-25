@@ -59,4 +59,26 @@ Error Code | Description
 5|`eof` detected prematurely.
 255|Feature being tested has not yet been implemented.
 
+### Execution:
+To execute `dear-diary` as a command, follow these steps:
+1. Create a `bin/` directory in `.local`:
+```
+mkdir ~/.local/bin/
+```
+    - It is advised to have a different directory to your systems `bin/` directory for custom comamnds.
+    - If you want a different location, then follow the below steps but change the directory to your chosen one.
+2. Add directory to `PATH`:
+```
+export PATH="$HOME/.local/bin/:$PATH"
+```
+    - If using different directory change `$HOME/.local/bin/` to the directory your chosen directory.
+3. Copy `dear-diary.sh` into the directory:
+```
+cp /path/to/dear-diary.sh ~/.local/bin/dear-diary
+```
+    - Do not include the `.sh` file extendion in the name of the copied file.
 
+Now you should be able to run the `dear-diary` anywhere.
+
+NOTE: If you want to keep this feature in all future sessions, append `export PATH="$HOME/.local/bin/:$PATH"` to your shell configuration file.
+NOTE: If changes are made to `dear-diary.sh`, you must re-copy the file to `~/.local/bin/` to implement the changes.
