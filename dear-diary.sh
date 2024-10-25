@@ -59,7 +59,7 @@ then
         echo -en "Failed to encrypt file. gpg error code $errCode.\n"
         exit $errCode
     fi
-    shred -u $FILE
+    rm $FILE
 else
     echo -en "Password:"
     read -s PASSWORD
@@ -77,7 +77,7 @@ else
         exit $errCode
     fi
     
-    shred -u $FILE # Delete the encrypted file.
+    rm $FILE # Delete the encrypted file.
 
     FILE=${FILE%.*}
     vim $FILE
@@ -96,7 +96,7 @@ else
         exit $errCode
     fi
 
-    shred -u $FILE # Delete plaintext file.
+    rm $FILE # Delete plaintext file.
 fi
 
 exit 0
