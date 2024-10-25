@@ -1,7 +1,7 @@
 #!/bin/expect 
 
-if { [llength $argv] != 3 } {
-    puts "Usage Error. Usage: ./test6.exp new_file password\n"
+if { [llength $argv] != 3 || [file extension [lindex $argv 0]] ne ".drd" } {
+    puts "Usage Error. Usage: ./test6.exp drd_file password\n"
     exit 1
 }
 set FILE [lindex $argv 0]

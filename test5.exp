@@ -1,12 +1,13 @@
 #!/bin/expect
 
-if { [llength $argv] != 3 } {
-    puts "Usage Error. Usage: ./test5.exp new_file password\n"
+if { [llength $argv] != 3 || [file extension [lindex $argv 0]] ne ".drd" } {
+    puts "Usage Error. Usage: ./test5.exp drd_file password\n"
     exit 1
 }
 set FILE [lindex $argv 0]
 set PASSWORD [lindex $argv 1]
 set MESSAGE [lindex $argv 2]
+set PLAINFILE [file rootname $FILE] ;# Get the plaintext file name (remove the .drd)
 
 set timeout 5
 
@@ -30,7 +31,7 @@ expect {
 }
 
 expect {
-    $FILE {
+    $PLAINFILE {
         send "a$MESSAGE\x1B:wq\r"
     } timeout {
         puts "Timeout Error: Failed to recognise vim.\n"

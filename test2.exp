@@ -1,6 +1,6 @@
 #!/bin/expect 
 
-if { [llength $argv] != 3 } {
+if { [llength $argv] != 3 || [file extension [lindex $argv 0]] eq ".drd" } {
     puts "Usage Error. Usage: ./test2.exp new_file password message\n"
     exit 1
 }
