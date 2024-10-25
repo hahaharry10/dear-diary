@@ -256,9 +256,9 @@ t6_message="Pre-existing file for test 6."
 echo "$t6_message" > $FILE
 gpg --batch --yes --passphrase "$PASSWORD" --cipher-algo AES256 --symmetric -o "$FILE.drd" $FILE > /dev/null 2>&1
 errNum=0
-./test6.exp $FILE "$PASSWORD" "$MESSAGE"  1>/dev/null
+./test6.exp "$FILE.drd" "$PASSWORD" "$MESSAGE"  1>/dev/null
 errCode=$?
-if [[ $errCode != 0 ]] 
+if [[ $errCode != 2 ]] 
 then
     errMessage=$(getErrMessage "Test 6: ${RED}ERROR${RESET} ($errCode):" 6 $errCode)
     ((++errNum))
