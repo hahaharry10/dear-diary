@@ -63,7 +63,8 @@ then
 else
     echo -en "Password:"
     read -s PASSWORD
-    gpg --batch --yes --passphrase "$PASSWORD" --decrypt -o "${FILE%.*}" $FILE
+    echo -en "\n"
+    gpg --batch --yes --passphrase "$PASSWORD" --decrypt -o "${FILE%.*}" $FILE > /dev/null 2>&1
     errCode=$?
 
     if [[ $errCode -ne 0 ]]
