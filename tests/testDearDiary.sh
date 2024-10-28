@@ -55,7 +55,7 @@ then
 fi
 
 mkdir test/
-cp ./dear-diary.sh test/
+cp ../dear-diary.sh test/
 cp ./test1.exp test/test1.exp
 cp ./test2.exp test/test2.exp
 cp ./test3.exp test/test3.exp
