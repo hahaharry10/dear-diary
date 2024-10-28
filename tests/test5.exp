@@ -1,4 +1,4 @@
-#!/opt/homebrew/bin/expect
+#!/bin/expect
 
 if { [llength $argv] != 3 || [file extension [lindex $argv 0]] ne ".drd" } {
     puts "Usage Error. Usage: ./test5.exp drd_file password message\n"
