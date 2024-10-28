@@ -1,20 +1,19 @@
-#!/bin/expect
+#!/opt/homebrew/bin/expect
 
 if { [llength $argv] != 3 || [file extension [lindex $argv 0]] ne ".drd" } {
-    puts "Usage Error. Usage: ./test5.exp drd_file password message\n"
+    puts "Usage Error. Usage: ./test6.exp drd_file password message\n"
     exit 1
 }
 set FILE [lindex $argv 0]
 set PASSWORD [lindex $argv 1]
 set MESSAGE [lindex $argv 2]
-set PLAINFILE [file rootname $FILE] ;# Get the plaintext file name (remove the .drd)
 
 set timeout 5
 
 spawn dear-diary $FILE
 expect {
     "Password:" {
-        send "$PASSWORD\r"
+        send "$PASSWORD INCORRECT\r"
     } timeout {
         puts "Timeout Error: Failed to recognise \"Password:\" prompt.\n"
         exit 3 ;# timeout occurred when expecting pattern.
@@ -22,24 +21,6 @@ expect {
         catch wait result ;# eof encountered too quickly. See returned error.
         if { [lindex $result 2] == -1 } {
             puts "OS Error: Error when expecting \"Password:\" prompt.\n"
-            exit 4 ;# OS error.
-        } else {
-            puts "EOF Error: when expecting \"Password:\" prompt.\n"
-            exit 5 ;# Early eof error.
-        }
-    }
-}
-
-expect {
-    $PLAINFILE {
-        send "a$MESSAGE\x1B:wq\r"
-    } timeout {
-        puts "Timeout Error: Failed to recognise vim.\n"
-        exit 2 ;# Vim failed to open.
-    } eof {
-        catch wait result ;# eof encountered too quickly. See returned error.
-        if { [lindex $result 2] == -1 } {
-            puts "OS Error: Error when executing command.\n"
             exit 4 ;# OS error.
         } else {
             puts "EOF Error: when expecting \"Password:\" prompt.\n"

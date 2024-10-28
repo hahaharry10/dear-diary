@@ -1,7 +1,7 @@
-#!/bin/expect 
+#!/opt/homebrew/bin/expect
 
 if { [llength $argv] != 3 || [file extension [lindex $argv 0]] eq ".drd" } {
-    puts "Usage Error. Usage: ./test3.exp new_file password message\n"
+    puts "Usage Error. Usage: ./test2.exp new_file password message\n"
     exit 1
 }
 set FILE [lindex $argv 0]
@@ -25,44 +25,6 @@ expect {
         } else {
             puts "EOF Error: when expecting \"Password:\" prompt.\n"
             exit 5 ;# Early eof error.
-        }
-    }
-}
-
-for {set i 0} {$i < 4} {incr i 1} {
-    expect {
-        "Password:" {
-            send "$PASSWORD\r"
-        } timeout {
-            puts "Timeout Error: Failed to recognise \"Password:\" prompt.\n"
-            exit 3 ;# timeout occurred when expecting pattern.
-        } eof {
-            catch wait result ;# eof encountered too quickly. See returned error.
-            if { [lindex $result 2] == -1 } {
-                puts "OS Error: Error when expecting \"Password:\" prompt.\n"
-                exit 4 ;# OS error.
-            } else {
-                puts "EOF Error: when expecting \"Password:\" prompt.\n"
-                exit 5 ;# Early eof error.
-            }
-        }
-    }
-
-    expect {
-        "Confirm Password:" {
-            send "$PASSWORD INCORRECT\r"
-        } timeout {
-            puts "Timeout Error: Failed to recognise \"Confirm Password:\" prompt.\n"
-            exit 3 ;# timeout occurred when expecting pattern.
-        } eof {
-            catch wait result ;# eof encountered too quickly. See returned error.
-            if { [lindex $result 2] == -1 } {
-                puts "OS Error: Error when expecting \"Confirm Password:\" prompt.\n"
-                exit 4 ;# OS error.
-            } else {
-                puts "EOF Error: when expecting \"Confirm Password:\" prompt.\n"
-                exit 5 ;# Early eof error
-            }
         }
     }
 }

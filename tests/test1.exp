@@ -1,4 +1,4 @@
-#!/bin/expect
+#!/opt/homebrew/bin/expect
 
 # TEST: File not in directory. and nothing saved (file remains not in directory).
 if { [llength $argv] != 2 || [file extension [lindex $argv 0]] eq ".drd" } {
