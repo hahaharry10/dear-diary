@@ -26,7 +26,7 @@ The main testing logic are written in `testDearDiary.sh` and will call the expec
     ```
 4. If the expect location is different to the repos default, change the shebang in the expect scritps with:
     ```
-    $ sed -i "s|^#\!/.*|#\!$(which bash)|" *.sh
+    $ sed -i "s|#\!.*|#\!$(which expect)|g" *.exp
     ```
 
 Once these steps are completed run the test using `./testDearDiary.sh`.
