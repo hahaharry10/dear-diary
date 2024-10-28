@@ -2,12 +2,10 @@
 dear-diary is a command-line tool allowing secure journalling directly from the terminal. Files are password protected and secured using ![GnuPG](https://gnupg.org) and currently only supports the ![vim](https://www.vim.org) text editor.
 
 # Installation
-Supported platofrms:
+## Supported platofrms:
 - Linux
 - MacOS
-
-### Dependencies
-Dependencies:
+## Dependencies
 - ![GnuPG](https://gnupg.org)
 - ![vim](https://www.vim.org)
 
@@ -40,7 +38,7 @@ NOTE:
 $ dear-diary file
 ```
 
-## Additional Features:
+### Additional Features:
 Additional features contribute to the final product but are beyond the MVP.
 - [ ] Support for windows
 - Execution options: `Usage: dear-diary [flags] file`
