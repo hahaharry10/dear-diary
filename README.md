@@ -2,10 +2,11 @@
 dear-diary is a command-line tool allowing secure journalling directly from the terminal. Files are password protected and secured using ![GnuPG](https://gnupg.org) and currently only supports the ![vim](https://www.vim.org) text editor.
 
 # Installation
-## Supported platofrms:
+### Supported platforms:
 - Linux
 - MacOS
-## Dependencies
+
+### Dependencies
 - ![GnuPG](https://gnupg.org)
 - ![vim](https://www.vim.org)
 
@@ -38,11 +39,10 @@ NOTE:
 $ dear-diary file
 ```
 
-### Additional Features:
+## Additional Features:
 Additional features contribute to the final product but are beyond the MVP.
 - [ ] Support for windows
 - Execution options: `Usage: dear-diary [flags] file`
-	- [ ] `Usage: dear-diary [options] [file]`
 	- [ ] `-h` Display help.
 	- [ ] `-l` Encrypt (lock) the file.
 		- Input: `fileName.txt`
@@ -52,9 +52,9 @@ Additional features contribute to the final product but are beyond the MVP.
 		- Input: `fileName.drd`
 		- Output: `fileName.txt`
 		- `fileName.drd` must exist.
-	- [ ] `-n` Create new password before encryption.
+	- [ ] `-n` Create a new password before encryption.
 		- Input: `fileName[.drd|.txt]`
 		- Output: `fileName[.txt|.drd]`
-		- If file does not exist, operation will be be identical to MVP.
-	- [ ] `-nvim` Open file using neovim (if installed) instead of vim.
+		- If the file does not exist, the operation will be identical to core functionality.
+	- [ ] `-nvim` Open the file using neovim (if installed) instead of vim.
 	- [ ] `-v` Verbose; output log to terminal.
